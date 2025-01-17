@@ -1,0 +1,253 @@
+// Even though not a perfect example of the linear function principle (LFP) 
+// this function from stygiansift illustrates many of the ideas talked about in the essay
+
+#[rustfmt::skip]
+pub fn display_help_screen(
+    stdout: &mut impl Write,
+    config: &Config,
+    app_state: &AppState,
+    full_redraw: bool,
+) -> io::Result<()> {
+let mut current_page = 1;
+    let total_pages = 2;
+    
+    let _ = full_redraw;
+    let (width, height) = size()?;
+    let nav_width = width / 2;
+    let _preview_width = width - nav_width - 2;
+
+    let _ = clear_nav();
+    let _ = clear_preview();
+
+    let title = "File Browser Help Menu\r";
+    let separator = "=".repeat(title.len());
+    execute!(stdout, MoveTo(nav_width / 3, 3))?;
+    writeln!(stdout, "{}\r", title.bold().green())?;
+    execute!(stdout, MoveTo(nav_width / 3, 4))?;
+    writeln!(stdout, "{}\r", separator.green())?;
+
+    let get_key_for_action = |action: &Action| -> String {
+        config
+            .keybindings
+            .as_ref()
+            .and_then(|kb| {
+                kb.iter().find_map(|(k, v)| {
+                    if v == action {
+                        Some(key_event_to_string(k))
+                    } else {
+                        None
+                    }
+                })
+            })
+            .unwrap_or_else(|| "Unbound".to_string())
+    };
+    let page1_sections = [
+        (
+            "Navigation",
+            vec![
+                (format!("{} / {}", get_key_for_action(&Action::MoveUp).trim_matches('"'), "k"), "Move up in the file list"),
+                (format!("{} / {}", get_key_for_action(&Action::MoveDown).trim_matches('"'), "j"), "Move down in the file list"),
+                (format!("{} / {}", get_key_for_action(&Action::MoveLeft).trim_matches('"'), "h"), "Go to parent directory"),
+                (format!("{} / {}", get_key_for_action(&Action::MoveRight).trim_matches('"'), "l"), "Enter selected directory"),
+                (get_key_for_action(&Action::GoToTop).trim_matches('"').to_string(), "Go to top of list"),
+                (get_key_for_action(&Action::GoToBottom).trim_matches('"').to_string(), "Go to bottom of list"),
+                (get_key_for_action(&Action::SearchFiles).trim_matches('"').to_string(), "Search the file system"),
+                ("0-9".to_string(), "Navigate to shortcut directory"),
+            ],
+        ),
+        (
+            "File Operations",
+            vec![
+                (get_key_for_action(&Action::ExecuteFile).trim_matches('"').to_string(), "Execute a file"),
+                (get_key_for_action(&Action::GiveBirthDir).trim_matches('"').to_string(), "Create a directory"),
+                (get_key_for_action(&Action::GiveBirthFile).trim_matches('"').to_string(), "Create a file"),
+                (get_key_for_action(&Action::MoveItem).trim_matches('"').to_string(), "Move selected file or directory"),
+                (get_key_for_action(&Action::Rename).trim_matches('"').to_string(), "Rename (keep extension)"),
+                (get_key_for_action(&Action::RenameWithoutExtension).trim_matches('"').to_string(), "Rename (allow extension change)"),
+                (get_key_for_action(&Action::Duplicate).trim_matches('"').to_string(), "Duplicate selected file/folder"),
+                (get_key_for_action(&Action::Murder).trim_matches('"').to_string(), "Delete selected file(s)/folder(s)"),
+                (get_key_for_action(&Action::Copy).trim_matches('"').to_string(), "Copy to clipboard"),
+                (get_key_for_action(&Action::Paste).trim_matches('"').to_string(), "Paste from clipboard"),
+                (get_key_for_action(&Action::OpenInEditor).trim_matches('"').to_string(), "Open in text editor"),
+            ],
+        ),
+        (
+            "View and Display",
+            vec![
+                (get_key_for_action(&Action::TogglePreview).trim_matches('"').to_string(), "Toggle preview pane"),
+                (get_key_for_action(&Action::ToggleCount).trim_matches('"').to_string(), "Toggle item count display"),
+                (get_key_for_action(&Action::SortCycleForward).trim_matches('"').to_string(), "Change sort order (forward)"),
+                (get_key_for_action(&Action::SetLineAmount).trim_matches('"').to_string(), "Set number of lines in preview"),
+                (get_key_for_action(&Action::CycleItemColor).trim_matches('"').to_string(), "Cycle item color"),
+                (get_key_for_action(&Action::RemoveItemColor).trim_matches('"').to_string(), "Remove item color"),
+                (get_key_for_action(&Action::SetColorRules).trim_matches('"').to_string(), "Set color rules"),
+            ],
+        ),
+        (
+            "Search and Filter",
+            vec![
+                (get_key_for_action(&Action::Search).trim_matches('"').to_string(), "Search the selected file"),
+                (get_key_for_action(&Action::SearchFiles).trim_matches('"').to_string(), "Search for files"),
+            ],
+        ),
+        (
+            "Multi-Select",
+            vec![
+                (get_key_for_action(&Action::SelectAll).trim_matches('"').to_string(), "Select all files"),
+                (get_key_for_action(&Action::ToggleSelect).trim_matches('"').to_string(), "Toggle select mode"),
+                (get_key_for_action(&Action::MultiSelectUp).trim_matches('"').to_string(), "Select multiple files (moving up)"),
+                (get_key_for_action(&Action::MultiSelectDown).trim_matches('"').to_string(), "Select multiple files (moving down)"),
+            ],
+        ),
+        (
+            "System and Tools",
+            vec![
+                (get_key_for_action(&Action::TerminalCommand).trim_matches('"').to_string(), "Open terminal"),
+                (get_key_for_action(&Action::CastCommandLineSpell).trim_matches('"').to_string(), "Open terminal within in StygianSift"),
+                (get_key_for_action(&Action::GitMenu).trim_matches('"').to_string(), "Open Git menu"),
+                (get_key_for_action(&Action::Undo).trim_matches('"').to_string(), "Undo last operation"),
+            ],
+        ),
+        (
+            "Configuration and Help",
+            vec![
+                (get_key_for_action(&Action::EditConfig).trim_matches('"').to_string(), "Open configuration menu"),
+                (get_key_for_action(&Action::Help).trim_matches('"').to_string(), "Show this help menu"),
+                (get_key_for_action(&Action::ShowShortcuts).trim_matches('"').to_string(), "Show your stored shortcuts"),
+            ],
+        ),
+    (
+        "Shortcuts",
+        vec![
+            ("0-9".to_string(), "Use shortcut from current layer"),
+            ("Shift + 0-9".to_string(), "Set shortcut in current layer"),
+            ("F1-F10".to_string(), "Quick switch between layers"),
+        ],
+    ),
+    ];
+    let page2_sections: [(&str, Vec<(String, &str)>); 8] = [
+            (
+                "Layer Management",
+                vec![
+                    ("F1-F10".to_string(), "Switch to corresponding layer"),
+                    (get_key_for_action(&Action::RenameLayer).trim_matches('"').to_string(), "Rename current layer"),
+                    ("!-) (Shift+0-9)".to_string(), "Set shortcut in current layer"),
+                    ("0-9".to_string(), "Use shortcut from current layer"),
+                    ("F2".to_string(), "Show layer overview and shortcuts"),
+                ],
+            ),
+            (
+                "Visual Settings",
+                vec![
+                    (get_key_for_action(&Action::DecreaseDimDistance).trim_matches('"').to_string(), "Decrease dimming distance"),
+                    (get_key_for_action(&Action::IncreaseDimDistance).trim_matches('"').to_string(), "Increase dimming distance"),
+                    (get_key_for_action(&Action::DecreaseDimIntensity).trim_matches('"').to_string(), "Decrease dimming intensity"),
+                    (get_key_for_action(&Action::IncreaseDimIntensity).trim_matches('"').to_string(), "Increase dimming intensity"),
+                    (get_key_for_action(&Action::BorderStyle).trim_matches('"').to_string(), "Toggle border style"),
+                ],
+            ),
+            (
+        "",
+                vec![(" ".to_string(), "")],
+            ),
+            (
+        "",
+                vec![(" ".to_string(), "")],
+            ),
+            (
+        "",
+                vec![(" ".to_string(), "")],
+            ),
+            (
+        "",
+                vec![(" ".to_string(), "")],
+            ),
+            (
+        "",
+                vec![(" ".to_string(), "")],
+            ),
+            (
+        "",
+                vec![(" ".to_string(), "")],
+            ),
+            
+        ];
+
+         loop {
+        let _ = clear_nav();
+        let _ = clear_preview();
+
+        let title = "File Browser Help Menu\r";
+        let separator = "=".repeat(title.len());
+        execute!(stdout, MoveTo(nav_width / 3, 3))?;
+        writeln!(stdout, "{}\r", title.bold().green())?;
+        execute!(stdout, MoveTo(nav_width / 3, 4))?;
+        writeln!(stdout, "{}\r", separator.green())?;
+
+        let sections = if current_page == 1 { &page1_sections } else { &page2_sections };
+        let mut current_column = 0;
+        let mut current_row = height / 8;
+        let column_width = (width / 2) - 4;
+
+        for (i, (section_title, commands)) in sections.iter().enumerate() {
+            if i > 0 && i % 4 == 0 {
+                current_column += column_width;
+                current_row = 6;
+            }
+
+            execute!(stdout, MoveTo(current_column + 8, current_row))?;
+            writeln!(stdout, "{}\r", section_title.bold().green())?;
+            current_row += 1;
+
+            for (key, description) in commands {
+                execute!(stdout, MoveTo(current_column + 8, current_row))?;
+                writeln!(stdout, "{:<15}  {}\r", key.clone().red(), description.cyan())?;
+                current_row += 1;
+            }
+            current_row += 1;
+        }
+
+        execute!(stdout, MoveTo((width / 2) + 4, height - 18))?;
+        writeln!(stdout, "{}\r", "Search Depth:".bold().yellow())?;
+        execute!(stdout, MoveTo((width / 2) + 4, height - 17))?;
+        writeln!(stdout, "Current Depth: {}\r", app_state.search_depth_limit.to_string().red())?;
+
+        execute!(stdout, MoveTo((width / 2) + 4, height - 15))?;
+        writeln!(stdout, "{}\r", "Undo System Information:".bold().yellow())?;
+        execute!(stdout, MoveTo((width / 2) + 4, height - 14))?;
+        writeln!(stdout, "RAM Limit: {} MB\r", app_state.undo_manager.ram_limit / 1_048_576)?;
+        execute!(stdout, MoveTo((width / 2) + 4, height - 13))?;
+        writeln!(stdout, "Disk Limit: {} GB\r", app_state.undo_manager.disk_limit / 1_073_741_824)?;
+        execute!(stdout, MoveTo((width / 2) + 4, height - 12))?;
+        writeln!(stdout, "Disk Storage Allowed: {}\r",
+            if app_state.undo_manager.allow_disk_storage { "Yes".green() } else { "No".red() }
+        )?;
+
+        execute!(stdout, MoveTo((width / 2) + 4, height - 10))?;
+        writeln!(stdout, "{}\r", "Navigation:".bold().yellow())?;
+        execute!(stdout, MoveTo((width / 2) + 4, height - 9))?;
+        writeln!(stdout, "Page {} of {} (Use → and ← to navigate pages)\r", current_page, total_pages)?;
+        execute!(stdout, MoveTo((width / 2) + 4, height - 8))?;
+        writeln!(stdout, "Press ESC to return to the file browser...\r")?;
+        execute!(stdout, MoveTo((width / 2) + 4, height - 7))?;
+        writeln!(stdout, "{}: {}\r", "Tip: You can remap these keybindings by pressing".italic().blue(), "F3".italic().red())?;
+        execute!(stdout, MoveTo((width / 2) + 4, height - 6))?;
+        writeln!(stdout, "{}\r", "Tip: Experiment with different commands to become more proficient!".italic().blue())?;
+
+        stdout.flush()?;
+
+        if let Event::Key(key) = event::read()? {
+            match key.code {
+                KeyCode::Esc => break,
+                KeyCode::Right | KeyCode::Char('l') if current_page < total_pages => {
+                    current_page += 1;
+                }
+                KeyCode::Left | KeyCode::Char('h') if current_page > 1 => {
+                    current_page -= 1;
+                }
+                _ => {}
+            }
+        }
+    }
+    Ok(())
+}
