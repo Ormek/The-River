@@ -2,7 +2,7 @@
 ### By Maui_The_Magnificent
 
 ## Introduction
-Before we start, I would like to mention that there is a condensed set of guidelines in the repo, feel free to read that first as it might help with understanding 
+Before we start, I would like to mention that there is a condensed set of practical guidelines in the repo, feel free to read that first as it might help with understanding 
 the rest of the essay.
 
 Imagine standing beside a river. You can see exactly where the water comes from, how it flows around obstacles, where it joins other streams, and where it ultimately leads. The entire system is visible and comprehensible at a glance. 
