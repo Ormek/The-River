@@ -523,13 +523,13 @@ By embracing this narrative mindset, we can create code that not only works, but
 
 And that, ultimately, is the real promise of the River of Code. Not just cleaner or more efficient code, but code that tells a story, code that has meaning and purpose, code that reflects the real complexity and richness of the problems we're trying to solve.
 
-So as you write your next feature or debug your next issue, ask yourself: What story am I trying to tell here? How can I make this story as clear, as complete, and as compelling as possible? How can I let the story flow naturally, like a river, from beginning to end?
+So as you write your next feature or debug your next issue, ask yourself: What story am I trying to tell here? How can I make this story as clear, as complete, and as compelling as possible? And what are the steps I need to take to make it flow naturally, like a river, from beginning to end?
 
-The answers to these questions may not always be easy or obvious. But by asking them, and by striving to create code that tells a clear and meaningful story, we can tap into a deeper level of craftsmanship and artistry in our work. We can create software that not only works, but that also communicates, that inspires, that makes a difference.
+The answers to these questions may not always be easy or obvious. But by asking them, and by striving to create code that is clear and meaningful, we can tap into a deeper level of craftsmanship and artistry in our work. We can create software that not only works, but that also communicates, that inspires, and that is honest.
 
-And in the end, isn't that what this craft of software development is all about? Not just solving problems, but telling stories, stories that matter, stories that shape the world.
+And in the end, isn't that what this whole coding thing is about? Not just solving problems, but telling the stories that we want to tell.
 
-So let your code tell its story. And let that story be one worth telling.
+So please, let your code tell its story. And let that story be a good one.
 
 ### Practical Principles for River-Like Systems
 
