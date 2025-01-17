@@ -180,7 +180,6 @@ def load_user_profile(user_id_str):
 In the fragmented example, the exception message is generic because the `parse_user_id` function doesn't have any context about how the ID string will be used. In the river-based example, the exception can include the actual invalid value, and there's a second, more specific exception if no user is found for the parsed ID.
 
 ### Flow-Aware Debugging Tools
-
 As river-based code becomes more common, our debugging tools will need to evolve to take advantage of the flow-based structure.
 
 Imagine a debugger that understands the concept of flows:
@@ -188,6 +187,11 @@ Imagine a debugger that understands the concept of flows:
 - It could visualize the state changes within a flow, showing how data is transformed step by step
 - It could provide flow-specific logging, automatically capturing the inputs and outputs of each major flow
 - It could even detect and highlight deviations from expected flow patterns, drawing attention to potential issues.
+
+### Testing
+Linear functions can actually be easier to test because you're testing complete 
+processes rather than trying to test fragments in isolation. Integration tests 
+become more straightforward because the integration points are more visible.
 
 ## Handling Cross-Cutting Concerns
 A common question about about the river is how it handles cross-cutting concerns like logging, monitoring, and security. After all, these are things that need to be consistent across the entire system right?
