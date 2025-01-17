@@ -2,6 +2,9 @@
 ### By Maui_The_Magnificent
 
 ## Introduction
+Before we start, I would like to mention that there is a condensed set of guidelines in the repo, feel free to read that first as it might help with understanding 
+the rest of the essay.
+
 Imagine standing beside a river. You can see exactly where the water comes from, how it flows around obstacles, where it joins other streams, and where it ultimately leads. The entire system is visible and comprehensible at a glance. 
 
 Now imagine taking that same water, breaking it into countless small bottles, and distributing them through a complex network of warehouses and delivery routes. What are the costs and benefits of keeping the water as a river versus bottling it up? Which system do you think is better, more intuitive?  These are the questions I want you to reflect on as you continue to read.
