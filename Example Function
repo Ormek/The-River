@@ -1,5 +1,6 @@
 // Even though not a perfect example of the linear function principle (LFP) 
-// this function from stygiansift illustrates many of the ideas talked about in the essay
+// this function from stygiansift illustrates many of the ideas talked about in the essay.
+// Things like linear flow, fault isolation and local abstractions.
 
 #[rustfmt::skip]
 pub fn display_help_screen(
