@@ -15,7 +15,7 @@ The metaphor, though simple, captures the essence of how we often approach softw
 
 Just as a river naturally finds the most efficient path through its environment, our code should do the same, it should be allowed to follow its natural course. This doesn't mean writing spaghetti code, a river has structure and follows natural laws. But it does mean letting go of arbitrary rules about size and fragmentation that don't serve actual understanding.
 
-The aim of this essay is not to convert you into a new dogma of 'best practices' but to highlight the problematic nature of what we are being tought, and to encurage you to reflect on the troubles of software developmen today, and to suggest an alternative set of guide-lines.
+The aim of this essay is not to convert you into a new dogma of 'best practices' but to highlight the problematic nature of what we are being taught, and to encourage you to reflect on the troubles of software development today, and to suggest an alternative set of guide-lines.
 
 ## The Lesson of Flow
 When solving problems, we tend to think in flows, in complete processes that have a beginning, middle, and end. Our minds are most optimized for understanding continuous narratives, not for piecing together meaning from fragments. Yet our current programming practices often force us to break our natural problem-solving flow into small, supposedly reusable pieces.
@@ -37,14 +37,14 @@ The concept of code as a river, a continuous, comprehensible flow might sound co
 
 But before we delve deeper, it's important to understand that a program is rarely a single river, it's a watershed, a network of distinct rivers each handling their own complete flow. Each function should aim to be its own river, flowing from source to destination, with its own integrity and purpose. These rivers might connect at well-defined points, like tributaries joining a larger stream, but each maintains its own independant flow within its boundaries.
 
-This might make it sound like a stance against abstractions, and in some ways it is, but when we talk about abstractions in the LFP, we're talking about local patterns within each individual river, not about as an attempt to serve or connect different rivers together. This is a crucial distinction. While our program might have many rivers, one for file operations, another for user interface handling, yet another for data processing, each should maintain its own clear, uninterrupted flow
+This might make it sound like a stance against abstractions, and in some ways it is, but when we talk about abstractions in the LFP, we're talking about local patterns within each individual river, not about as an attempt to serve or connect different rivers together. This is a crucial distinction. While our program might have many rivers, one for file operations, another for user interface handling, yet another for data processing, each should maintain its own clear, uninterrupted flow.
 
 ### The Linear Function Principle
 The Linear Function Principle aims to provide a pragmatic framework for applying river-like structures in real-world software development. It states that functions should handle complete responsibilities in a linear, visible flow, regardless of their size.
 
 In practice, this often means having longer functions than traditional guidelines suggest. But the principle asserts that this is not only acceptable, but often preferable, as long as those functions maintain a clear, linear flow that's easy to follow.
 
-The key is the idea of "complete responsibility." Instead of breaking a task into many small, abstract pieces, it advocatews for reducing cognitive load by handling the entire task in one coherent flow. This makes the entire process visible and understandable in one place.
+The key is the idea of "complete responsibility." Instead of breaking a task into many small, abstract pieces, it advocates for reducing cognitive load by handling the entire task in one coherent flow. This makes the entire process visible and understandable in one place.
 
 Consider a typical Rust web request handler:
 
@@ -342,9 +342,9 @@ This could mean:
 
 ### The Visibility of Problems
 
-In traditional, modulized code, problems often manifest far from their source. A null pointer exception in one function might be caused by an improper initialization in a completely different part of the codebase. Tracing the issue requires mentally reconstructing the flow of data and control across many disconnected pieces.
+In traditional, modularized code, problems often manifest far from their source. A null pointer exception in one function might be caused by an improper initialization in a completely different part of the codebase. Tracing the issue requires mentally reconstructing the flow of data and control across many disconnected pieces.
 
-In river-based code, problems tend to manifest within the flow where they originate. If there's an issue in the user authentication flow, it will surface within that flow's logic. The problemw and its context are inherently visible, not scattered across distant functions.
+In river-based code, problems tend to manifest within the flow where they originate. If there's an issue in the user authentication flow, it will surface within that flow's logic. The problem and its context are inherently visible, not scattered across distant functions.
 
 Consider a typical user registration flow:
 
@@ -505,9 +505,9 @@ Lastly, and perhaps most importantly, abstractions should preserve the natural f
 
 It's crucial to emphasize this last point. Abstractions that make the code harder to follow or understand are likely not serving their intended purpose, regardless of how much duplication they eliminate. 
 
-I want to take a moment to mention that there is  a case to be had over the usefulness of semantic information that abstactions can provide, this information can be highly valuable as it can be used to reduce things like computation and memory allocation.
+I want to take a moment to mention that there is  a case to be had over the usefulness of semantic information that abstractions can provide, this information can be highly valuable as it can be used to reduce things like computation and memory allocation.
 
-But in most cases, if the decission to abstract code globally is made, it should be a conscious choice where the benefits are deemed to be far greater than the cost. Because each new global abstraction risks bottling up more and more of the river we are trying to perserve.
+But in most cases, if the decision to abstract code globally is made, it should be a conscious choice where the benefits are deemed to be far greater than the cost. Because each new global abstraction risks bottling up more and more of the river we are trying to preserve.
 
 ## The Power of Storytelling
 At its core, the River approach is about embracing the narrative nature of software development. It recognizes that code is not just a set of instructions for a computer, but a story that we tell about how a system works and what it does.
@@ -538,11 +538,11 @@ So please, let your code tell its story. And let that story be a good one.
 
 And lastly, a set of  guiding principles for building systems in the way that this philosophy purposes:
 
-1. Aim for Coherent, End-to-End Flows: Each major feature should be handled by a single, isolated flow of logic that's understandable from start to finish. Avoid breaking flows up into many small, abstract pieces. Because this allows for easier to maintain code
+1. Aim for Coherent, End-to-End Flows: Each major feature should be handled by a single, isolated flow of logic that's understandable from start to finish. Avoid breaking flows up into many small, abstract pieces. Because this allows for easier to maintain code.
 
 2. Let the Domain Guide Structure: The structure of your system should mirror the structure of the problem domain. If your e-commerce system naturally divides into catalog, cart, and checkout features, your code should reflect that same division.
 
-3. Keep Flows Independent: As much as possible, feature flows should be independent of each other. They can interact at well-defined points (like tributaries joining a river), but changes to one flow shouldn't require changes to others. This allows for fault isolation, constant complexity scaling and easy onboarding of new talant.
+3. Keep Flows Independent: As much as possible, feature flows should be independent of each other. They can interact at well-defined points (like tributaries joining a river), but changes to one flow shouldn't require changes to others. This allows for fault isolation, constant complexity scaling and easy onboarding of new talent.
 
 4. Allow for Local Variation: Different feature flows will often need to handle similar subproblems (like validation, error handling, etc.) in different ways. That's okay! Local optimization beats global consistency.
 
