@@ -1,5 +1,5 @@
 # The River: A Better Way to Code
-### By Maui_The_Magnificent
+### By Maui_The_Magnificent & Its Contributors
 
 ## Introduction
 Before we start, I would like to mention that there is a condensed set of practical guidelines in the repo, feel free to read that first as it might help with understanding 
