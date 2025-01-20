@@ -1,3 +1,5 @@
+![Status](https://img.shields.io/badge/Status-Living%20Document-Green)
+
 # The River: A Better Way to Code
 ### By Maui_The_Magnificent & Its Contributors
 
