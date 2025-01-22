@@ -64,9 +64,9 @@ Systems should be divided along natural feature boundaries, like a watershed con
 ## Anti-Patterns to Avoid
 
 1. Breaking flows into small functions - unless with clear and worthwhile benefits
-2. Creating global abstractions - unless absolutly necessary
+2. Creating global abstractions - unless for a concrete, well known cause.
 3. Forcing reuse between unrelated contexts - unless absolutly needed
-4. Obscuring flow with unnecessary indirection - unless with clear benefit
+4. Obscuring flow with indirection - unless with clear benefit
 5. Separating related functionality for the sake of "clean code" - is always bad
 
 ## Decision Framework
